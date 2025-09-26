@@ -80,29 +80,21 @@ On first login, you’ll be prompted to update your password.
    dotnet build
    dotnet test --no-build
 
-<<<<<<< HEAD
-      ## 1.1. Code Covergae (optional) 
-      dotnet test /p:CollectCoverage=true /p:CoverletOutput=TestResults/coverage.opencover.xml /p:CoverletOutputFormat=opencover
+   ## 1.1. Code Covergae (optional) 
+   dotnet test /p:CollectCoverage=true /p:CoverletOutput=TestResults/coverage.opencover.xml /p:CoverletOutputFormat=opencover
 
-   # 3. Sonar Build 
+   # 2. Sonar Build 
     dotnet sonarscanner begin /k:"PROJECTTOKENKEY" /d:sonar.host.url="http://localhost:9000"  /d:sonar.token="TOKEN"
 
-   # 2. Build the solution
+   # 3. Build the solution
       dotnet build
       dotnet test
 
-   # 3. Finishing
-      dotnet sonarscanner end /d:sonar.login="TOKEN"
-=======
-   # 2. Code Coverage
-   dotnet sonarscanner begin /k:"PROJECTTOKENKEY" /d:sonar.host.url="http://localhost:9000"  /d:sonar.token="TOKEN"
-
-   # 2. Build the solution
-    dotnet build 
-
-   # 3. Run tests with coverage (make sure you have coverlet.collector installed in test projects)
+   # 4. Run tests with coverage (make sure you have coverlet.collector installed in test projects)
       dotnet test D:/src/xyz.sln /p:CollectCoverage=true /p:CoverletOutput=TestResults /p:CoverletOutputFormat=opencover
->>>>>>> 6855f3360a66a45642d6338afeb07dc7279e7802
+
+   # 5. Finishing
+      dotnet sonarscanner end /d:sonar.login="TOKEN"
 
 
 ## ✅ Verification
