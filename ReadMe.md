@@ -80,15 +80,14 @@ On first login, you’ll be prompted to update your password.
    dotnet build
    dotnet test --no-build
 
-   # 2. Code Covergae 
+   # 2. Code Coverage
    dotnet sonarscanner begin /k:"PROJECTTOKENKEY" /d:sonar.host.url="http://localhost:9000"  /d:sonar.token="TOKEN"
-   ## dotnet sonarscanner begin /k:"MapService" /d:sonar.host.url="http://localhost:9000"  /d:sonar.token="sqp_ff282f049ccad31eaf23c39c6db8c51317815472"
 
    # 2. Build the solution
-    dotnet build D:/src/MapService.sln
+    dotnet build 
 
    # 3. Run tests with coverage (make sure you have coverlet.collector installed in test projects)
-      dotnet test D:/src/MapService.sln /p:CollectCoverage=true /p:CoverletOutput=TestResults /p:CoverletOutputFormat=opencover
+      dotnet test D:/src/xyz.sln /p:CollectCoverage=true /p:CoverletOutput=TestResults /p:CoverletOutputFormat=opencover
 
 
 ## ✅ Verification
