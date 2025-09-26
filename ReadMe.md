@@ -90,10 +90,7 @@ On first login, you’ll be prompted to update your password.
       dotnet build
       dotnet test
 
-   # 4. Run tests with coverage (make sure you have coverlet.collector installed in test projects)
-      dotnet test D:/src/xyz.sln /p:CollectCoverage=true /p:CoverletOutput=TestResults /p:CoverletOutputFormat=opencover
-
-   # 5. Finishing
+   # 4. Finishing
       dotnet sonarscanner end /d:sonar.login="TOKEN"
 
 
