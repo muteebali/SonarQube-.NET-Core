@@ -14,41 +14,23 @@ This document provides step-by-step instructions for running **SonarQube** in Do
 
 ## ⚙️ Setup Instructions
 
-### ** Run Docker Compose**
-dotnet tool install --global dotnet-sonarscanner
-
-### Incase dotnet-sonarscanner throw 401 erro follow below instructions 
-
-   ## Run this command
-   dotnet nuget list source
-
-   ## Disable private nugget temporarily
-   dotnet nuget enable source embrace-it
-
-   ### Run command again (sonnarscanner)
-
-   ### Enable the packages againg
-
----
-
-### **Step 1: Run Docker Compose**
+### ** Step 1: Sonar Scanner **
 ```bash
+dotnet tool install --global dotnet-sonarscanner --source https://api.nuget.org/v3/index.json
+```
+
+### **Step 2: Run Docker Compose**
+```bash
+docker compose -f ./Sonar.yml down -v
 docker compose -f Sonar.yml up
 ```
 
 ---
 
-### **Step 2: Run SonarQube Docker Image**
-```bash
-docker run -d --name sonarqube -p 9000:9000 sonarqube:latest
-```
+### **Step 3: Run SonarQube Docker Image**
+Sonar Qube Container will be up and running at [localhost://9000](http://localhost:9000)
 
-SonarQube will be accessible at:  
-👉 [http://localhost:9000](http://localhost:9000)
-
----
-
-### **Step 3: Login to SonarQube**
+### **Step 4: Login to SonarQube**
 - **Default Username:** `admin`  
 - **Default Password:** `admin`  
 
@@ -56,14 +38,14 @@ On first login, you’ll be prompted to update your password.
 
 ---
 
-### **Step 4: Setup a Project**
+### **Step 5: Setup a Project**
 1. Navigate to **Projects** in the SonarQube dashboard.  
 2. Click **Create Project**.  
 3. Select **Local Project** and configure the required details.  
 
 ---
 
-### **Step 5: Generate a Token**
+### **Step 6: Generate a Token**
 1. Go to **Administration → Projects → Management**.  
 2. Click on your project name.  
 3. Select **Locally**.  
@@ -72,26 +54,39 @@ On first login, you’ll be prompted to update your password.
 
 ---
 
-### **Step 6: Run Analysis Command**
+### **Step 7: Run Analysis Command**
 
-### *** To run analysis in visual studio
+### ***Open Visual Studio Developer Power Shel** 
+   #### 1. Clear Test Files
+   ```bash
+   Get-ChildItem -Path . -Recurse -Directory -Filter "TestResults" | Remove-Item -Recurse -Force
+   ```
 
-   # 1. Project Build
-   dotnet build
-   dotnet test --no-build
+   #### 2. Sonar Build 
+   ```bash
+    dotnet sonarscanner begin /k:"GlobalToken" /d:sonar.host.url="http://localhost:9000" /d:sonar.login="sqa_f6a3f2c4b62fc189b61d994ee9d9d377c739948a" /d:sonar.cs.opencover.reportsPaths="**/TestResults/coverage.opencover.xml"
 
-   ## 1.1. Code Covergae (optional) 
-   dotnet test /p:CollectCoverage=true /p:CoverletOutput=TestResults/coverage.opencover.xml /p:CoverletOutputFormat=opencover
+   ```
 
-   # 2. Sonar Build 
-    dotnet sonarscanner begin /k:"PROJECTTOKENKEY" /d:sonar.host.url="http://localhost:9000"  /d:sonar.token="TOKEN"
+#### 3. Build the solution
+   ```bash
+      dotnet build --no-incremental
+   ```
 
-   # 3. Build the solution
-      dotnet build
-      dotnet test
+   ### 4. Test Coverage for each project
+   ```bash
+      dotnet test --no-build /p:CollectCoverage=true /p:CoverletOutput=TestResults/coverage.opencover.xml /p:CoverletOutputFormat=opencover
+   ```
+   
+   #### 5. Check Code Coverage FIle
+   ```bash
+   Get-ChildItem -Recurse -Filter coverage.opencover.xml
+   ```
 
-   # 4. Finishing
-      dotnet sonarscanner end /d:sonar.login="TOKEN"
+   #### 6. Finishing
+   ```bash
+      dotnet sonarscanner end /d:sonar.login="sqa_f6a3f2c4b62fc189b61d994ee9d9d377c739948a"
+   ```
 
 
 ## ✅ Verification
@@ -107,3 +102,12 @@ You should see code quality metrics, bugs, vulnerabilities, and other reports fo
   ```bash
   docker logs sonarqube
   ```
+
+
+
+### To verify the coverlet library in projects
+Get-ChildItem -Recurse -Filter *.csproj | ForEach-Object { Write-Host "Checking $_"dotnet list $_ full | Select-String "coverlet"}
+
+### If not installed
+Get-ChildItem -Recurse -Filter *.csproj | Where-Object { $_.FullName -like "*Tests*" } | ForEach-Object {dotnet add $_.FullName package coverlet.collector --source https://api.nuget.org/v3/index.json}
+Get-ChildItem -Recurse -Filter *.csproj | Where-Object { $_.FullName -like "*Tests*" } | ForEach-Object {dotnet add $_.FullName package coverlet.msbuild --source https://api.nuget.org/v3/index.json}
