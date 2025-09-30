@@ -64,7 +64,7 @@ On first login, you’ll be prompted to update your password.
 
    #### 2. Sonar Build 
    ```bash
-    dotnet sonarscanner begin /k:"GlobalToken" /d:sonar.host.url="http://localhost:9000" /d:sonar.login="sqa_f6a3f2c4b62fc189b61d994ee9d9d377c739948a" /d:sonar.cs.opencover.reportsPaths="**/TestResults/coverage.opencover.xml"
+    dotnet sonarscanner begin /k:"GLS.DataPipeline" /d:sonar.host.url="http://localhost:9000" /d:sonar.login="sqp_19212f5c5b89dbde7b4e0a2ae94be75fca590b5b" /d:sonar.cs.opencover.reportsPaths="**/TestResults/coverage.opencover.xml"
 
    ```
 
@@ -85,7 +85,7 @@ On first login, you’ll be prompted to update your password.
 
    #### 6. Finishing
    ```bash
-      dotnet sonarscanner end /d:sonar.login="sqa_f6a3f2c4b62fc189b61d994ee9d9d377c739948a"
+      dotnet sonarscanner end /d:sonar.login="sqp_19212f5c5b89dbde7b4e0a2ae94be75fca590b5b"
    ```
 
 
