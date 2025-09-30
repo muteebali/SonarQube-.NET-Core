@@ -106,8 +106,12 @@ You should see code quality metrics, bugs, vulnerabilities, and other reports fo
 
 
 ### To verify the coverlet library in projects
+   ```bash
 Get-ChildItem -Recurse -Filter *.csproj | ForEach-Object { Write-Host "Checking $_"dotnet list $_ full | Select-String "coverlet"}
+```
 
 ### If not installed
+   ```bash
 Get-ChildItem -Recurse -Filter *.csproj | Where-Object { $_.FullName -like "*Tests*" } | ForEach-Object {dotnet add $_.FullName package coverlet.collector --source https://api.nuget.org/v3/index.json}
 Get-ChildItem -Recurse -Filter *.csproj | Where-Object { $_.FullName -like "*Tests*" } | ForEach-Object {dotnet add $_.FullName package coverlet.msbuild --source https://api.nuget.org/v3/index.json}
+```
